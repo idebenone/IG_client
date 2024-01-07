@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +16,9 @@ import {
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { login } from "@/components/api/authApi";
+import { isLoggedIn, setToken } from "@/components/api/storageApi";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -22,6 +26,12 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoggedIn()) router.push("/feed");
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -30,8 +40,10 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const handleLogin = async (values: z.infer<typeof formSchema>) => {
+    const token = await login(values);
+    setToken(token.token);
+    router.push("/feed");
   };
 
   return (
@@ -47,11 +59,12 @@ export default function Login() {
             voluptatum. Quaerat, deserunt est.
           </p>
         </div>
+
         <div className="w-full lg:w-1/2 h-full flex justify-center items-center flex-col">
           <div className="lg:w-1/2">
             <Form {...form}>
               <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(handleLogin)}
                 className="space-y-4"
               >
                 <FormField

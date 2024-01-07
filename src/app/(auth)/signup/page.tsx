@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +18,8 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { isLoggedIn } from "@/components/api/storageApi";
+
 const formSchema = z.object({
   email: z.string().min(2).max(50),
   name: z.string(),
@@ -24,6 +28,11 @@ const formSchema = z.object({
 });
 
 export default function Signup() {
+  const router = useRouter();
+  useEffect(() => {
+    if (isLoggedIn()) router.push("/feed");
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
