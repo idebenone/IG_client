@@ -16,7 +16,7 @@ export default function PostCards(props: PostCardProps) {
         alt={props.user}
         width={300}
         height={400}
-        className="cursor-pointer transition duration-300 ease-in-out filter brightness-100 group-hover:brightness-75"
+        className="cursor-pointer transition duration-300 ease-in-out filter brightness-100 group-hover:brightness-75 aspect-square object-cover"
       />
       <div className="absolute top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out cursor-pointer">
         <div className="flex gap-4">

@@ -22,7 +22,7 @@ import { useEffect } from "react";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
-  password: z.string().min(8),
+  password: z.string(),
 });
 
 export default function Login() {
@@ -89,7 +89,6 @@ export default function Login() {
                           type="password"
                           placeholder="Password"
                           {...field}
-                          minLength={8}
                         />
                       </FormControl>
                       <FormMessage />

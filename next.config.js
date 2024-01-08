@@ -4,7 +4,8 @@ const nextConfig = {
     images: {
         domains: [
             "avatars.githubusercontent.com",
-            "cloudflare-ipfs.com"
+            "cloudflare-ipfs.com",
+            "localhost"
         ],
     },
 }

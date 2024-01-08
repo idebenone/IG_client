@@ -54,20 +54,24 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
+import { newPost } from "@/components/api/postsApi";
 
 const formSchema = z.object({
-  title: z.string().min(2).max(200),
+  post_type: z.number(),
+  caption: z.string().min(2).max(200),
   location: z.string(),
 });
 
 const SideBar = () => {
   const router = useRouter();
   const [image, setImage] = useState<any>();
+  const [displayImgae, setDisplayImage] = useState<any>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
+      post_type: 1,
+      caption: "",
       location: "",
     },
   });
@@ -78,17 +82,30 @@ const SideBar = () => {
   };
 
   const handleFileSelect = (e: any) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        setImage(reader.result);
+        setDisplayImage(reader.result);
       };
       reader.readAsDataURL(file);
+      setImage(file);
     }
   };
 
-  const handleSharePost = () => {};
+  const handleSharePost = async (data: z.infer<typeof formSchema>) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", image, "post.jpg");
+      formData.append("post_type", data.post_type.toString());
+      formData.append("caption", data.caption);
+      formData.append("location", data.location);
+      await newPost(formData as any);
+      setImage(undefined);
+    } catch (error) {
+      console.error("Error sharing post:", error);
+    }
+  };
 
   return (
     <div className="w-[250px] border-r-[1px] border-gray-600 h-full p-4 flex flex-col gap-20">
@@ -143,7 +160,7 @@ const SideBar = () => {
                 <div className="border w-full rounded-lg flex flex-col gap-2 justify-center items-center p-12">
                   {image && (
                     <Image
-                      src={image}
+                      src={displayImgae}
                       width={100}
                       height={100}
                       alt="Selected Post"
@@ -164,7 +181,7 @@ const SideBar = () => {
                     >
                       <FormField
                         control={form.control}
-                        name="title"
+                        name="caption"
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
