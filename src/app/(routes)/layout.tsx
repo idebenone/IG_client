@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import SideBar from "../(routes)/_components/side-bar";
-import MobileBar from "./_components/mobile-bar";
-import MediumBar from "./_components/medium-bar";
+import SideBar from "./_components/_nav/side-bar";
+import MobileBar from "./_components/_nav/mobile-bar";
+import MediumBar from "./_components/_nav/medium-bar";
 import { useEffect } from "react";
 
 export const metadata: Metadata = {

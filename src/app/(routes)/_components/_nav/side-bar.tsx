@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import Link from "next/link";
 
 import { PersonIcon } from "@radix-ui/react-icons";
@@ -55,6 +57,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
 import { newPost } from "@/components/api/postsApi";
+import { searchUser } from "@/components/api/userApi";
+import SearchCard from "../search-cards";
 
 const formSchema = z.object({
   post_type: z.number(),
@@ -64,8 +68,17 @@ const formSchema = z.object({
 
 const SideBar = () => {
   const router = useRouter();
+  const [users, setUsers] = useState<any[]>([]);
   const [image, setImage] = useState<any>();
   const [displayImgae, setDisplayImage] = useState<any>();
+
+  const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.trim()) {
+      const response = await searchUser(event.target.value.trim());
+      console.log(response?.data);
+      setUsers(response?.data);
+    }
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,11 +88,6 @@ const SideBar = () => {
       location: "",
     },
   });
-
-  const handleLogout = () => {
-    logout();
-    router.push("/login");
-  };
 
   const handleFileSelect = (e: any) => {
     const file = e.target.files?.[0];
@@ -107,6 +115,11 @@ const SideBar = () => {
     }
   };
 
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   return (
     <div className="w-[250px] border-r-[1px] border-gray-600 h-full p-4 flex flex-col gap-20">
       <div>Logo</div>
@@ -124,7 +137,17 @@ const SideBar = () => {
               <SheetContent side="left">
                 <SheetHeader>
                   <SheetTitle>Search Accounts</SheetTitle>
-                  <Input placeholder="Search" />
+                  <Input placeholder="Search" onChange={handleSearch} />
+
+                  {users.map((val, key) => (
+                    <div key={key} className="w-full">
+                      <SearchCard
+                        name={val.name}
+                        username={val.username}
+                        profile_img={val.profile_img}
+                      />
+                    </div>
+                  ))}
                 </SheetHeader>
               </SheetContent>
             </Sheet>
