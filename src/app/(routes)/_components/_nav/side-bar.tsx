@@ -89,6 +89,10 @@ const SideBar = () => {
     },
   });
 
+  const handleProfileSelect = (id: string) => {
+    router.push(`/profile/${id}`);
+  };
+
   const handleFileSelect = (e: any) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -140,7 +144,11 @@ const SideBar = () => {
                   <Input placeholder="Search" onChange={handleSearch} />
 
                   {users.map((val, key) => (
-                    <div key={key} className="w-full">
+                    <div
+                      key={key}
+                      className="w-full"
+                      onClick={() => handleProfileSelect(val._id)}
+                    >
                       <SearchCard
                         name={val.name}
                         username={val.username}

@@ -14,6 +14,22 @@ export const getProfile = async () => {
   }
 };
 
+export const getOtherProfiles = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/user/profile/${id}`,
+      {
+        headers: {
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const searchUser = async (query: string) => {
   try {
     const response = await axios.get(
@@ -36,6 +52,24 @@ export const uploadProfileImage = async (data: any) => {
     const response = await axios.post(
       "http://localhost:3001/user/upload",
       data,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const followUser = async (id: string) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/user/follow/${id}`,
+      {},
       {
         headers: {
           "Content-Type": "multipart/form-data",
