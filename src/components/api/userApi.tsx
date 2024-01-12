@@ -82,3 +82,21 @@ export const followUser = async (id: string) => {
     console.log(error);
   }
 };
+
+export const unfollowUser = async (id: string) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/user/unfollow/${id}`,
+      {},
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -1,6 +1,10 @@
 "use client";
 
-import { followUser, getOtherProfiles } from "@/components/api/userApi";
+import {
+  followUser,
+  getOtherProfiles,
+  unfollowUser,
+} from "@/components/api/userApi";
 import { useEffect, useState } from "react";
 import PostCards from "../../_components/post-cards";
 import Image from "next/image";
@@ -10,15 +14,21 @@ import { Separator } from "@/components/ui/separator";
 export default function Page({ params }: { params: { id: string } }) {
   const [profile, setProfile] = useState<any>({});
   const [posts, setPosts] = useState<any[]>([]);
+  const [following, setFollowing] = useState<boolean>(false);
 
   const handleFollowUser = async (id: string) => {
     await followUser(id);
+  };
+
+  const handleUnFollowUser = async (id: string) => {
+    await unfollowUser(id);
   };
 
   const handleProfileFetch = async () => {
     const response = await getOtherProfiles(params.id);
     setProfile(response?.data.user);
     setPosts(response?.data.posts);
+    setFollowing(response?.data.is_following);
   };
 
   useEffect(() => {
@@ -42,12 +52,21 @@ export default function Page({ params }: { params: { id: string } }) {
           <div className="flex gap-4 items-center">
             <p className="font-medium">{profile.username}</p>
 
-            <Button
-              variant={"secondary"}
-              onClick={() => handleFollowUser(profile._id)}
-            >
-              Follow
-            </Button>
+            {following ? (
+              <Button
+                variant={"secondary"}
+                onClick={() => handleUnFollowUser(profile._id)}
+              >
+                Following
+              </Button>
+            ) : (
+              <Button
+                variant={"secondary"}
+                onClick={() => handleFollowUser(profile._id)}
+              >
+                Follow
+              </Button>
+            )}
             <Button variant={"secondary"}>Message</Button>
           </div>
 
