@@ -15,14 +15,20 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 
-import { getProfile, uploadProfileImage } from "@/components/api/userApi";
+import {
+  addComment,
+  getProfile,
+  uploadProfileImage,
+} from "@/components/api/userApi";
 import PostCards from "../_components/post-cards";
 import { Bookmark, HeartIcon, MessageCircle, Send } from "lucide-react";
+import Comments from "../_components/comments";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>({});
   const [posts, setPosts] = useState<any[]>([]);
   const [post, setPost] = useState<any>({});
+  const [comment, setComment] = useState<any>();
 
   const handleFileSelect = (e: any) => {
     const file = e.target.files?.[0];
@@ -53,14 +59,28 @@ export default function Profile() {
   };
 
   const formatDate = (inputDate: string): string => {
-    const date = new Date(inputDate);
-    const options: any = {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    };
-    const formatter = new Intl.DateTimeFormat("en-US", options);
-    return formatter.format(date);
+    // console.log(inputDate);
+    // const date = new Date(inputDate);
+    // const options: any = {
+    //   day: "numeric",
+    //   month: "long",
+    //   year: "numeric",
+    // };
+    // const formatter = new Intl.DateTimeFormat("en-US", options);
+    // return formatter.format(date);
+    return inputDate;
+  };
+
+  const handleComment = (e: any) => {
+    setComment(e.target.value);
+  };
+
+  const handleSubmitComment = async () => {
+    const response = await addComment({
+      post: post._id,
+      parent_comment: null,
+      comment: comment,
+    });
   };
 
   useEffect(() => {
@@ -136,27 +156,47 @@ export default function Profile() {
             </div>
           </DialogTrigger>
 
-          <DialogContent className="sm:max-w-[425px]">
-            <div className="flex flex-col md:flex-row gap-1">
+          <DialogContent className="max-w-[1000px]">
+            <div className="flex flex-col md:flex-row gap-4">
               <Image
                 src={post.img}
-                width={100}
-                height={100}
+                width={300}
+                height={300}
                 alt="Individual Post"
                 className="w-full h-full"
               />
               <div className="w-full flex flex-col justify-between">
                 <div className="flex justify-between">
-                  <div className="flex gap-2">
-                    <p>I</p>
-                    <p>username</p>
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      src={profile.profile_img}
+                      alt="Profile Image"
+                      height={100}
+                      width={100}
+                      className="rounded-full w-8 h-8 object-cover"
+                    />
+                    <p className="font-bold">{profile.username}</p>
                   </div>
                   <p>...</p>
                 </div>
-
+                <Separator className="my-3" />
                 <div className="flex flex-col h-full">
-                  <p className="font-thin">{post.caption}</p>
-                  <p className="text-center">Comments</p>
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      src={profile.profile_img}
+                      alt="Profile Image"
+                      height={100}
+                      width={100}
+                      className="rounded-full w-8 h-8 object-cover"
+                    />
+                    <div className="flex gap-2">
+                      <p className="font-semibold text-sm">
+                        {profile.username}
+                      </p>
+                      <p className="font-thin text-sm">{post.caption}</p>
+                    </div>
+                  </div>
+                  <Comments post_id={post._id} />
                 </div>
 
                 <div className="flex flex-col gap-2">
@@ -180,12 +220,15 @@ export default function Profile() {
 
                   <Separator />
 
-                  <div className="flex w-full">
+                  <div className="flex w-full gap-2">
                     <Input
                       placeholder="Write a comment"
                       className="w-full border-none focus:outline-none"
+                      onChange={handleComment}
                     />
-                    <Button variant={"ghost"}>Post</Button>
+                    <Button variant={"ghost"} onClick={handleSubmitComment}>
+                      Post
+                    </Button>
                   </div>
                 </div>
               </div>

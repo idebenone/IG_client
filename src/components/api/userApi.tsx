@@ -100,3 +100,36 @@ export const unfollowUser = async (id: string) => {
     console.log(error);
   }
 };
+
+export const addComment = async (data: any) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/user/comment`,
+      data,
+      {
+        headers: {
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getComments = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/user/comment/${id}`,
+      {
+        headers: {
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
