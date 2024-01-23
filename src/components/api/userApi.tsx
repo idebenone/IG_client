@@ -133,3 +133,33 @@ export const getComments = async (id: string) => {
     console.log(error);
   }
 };
+
+export const likePost = async (data: any) => {
+  try {
+    const response = await axios.post(`http://localhost:3001/user/like`, data, {
+      headers: {
+        "x-access-token": fetchToken().toString(),
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unlikePost = async (data: any) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3001/user/unlike`,
+      data,
+      {
+        headers: {
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
