@@ -58,7 +58,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { newPost } from "@/components/api/postsApi";
 import { searchUser } from "@/components/api/userApi";
-import SearchCard from "../search-cards";
+import SearchCard from "../cards/search-cards";
 
 const formSchema = z.object({
   post_type: z.number(),

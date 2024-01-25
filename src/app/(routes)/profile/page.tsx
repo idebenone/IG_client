@@ -6,14 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 import { getProfile, uploadProfileImage } from "@/components/api/userApi";
-import PostCards from "../_components/post-cards";
-import PostDialog from "../_components/dialog";
+import PostCards from "../_components/cards/post-cards";
+import PostDialog from "../_components/dialogs/post-dialog";
+import FollowDialog from "../_components/dialogs/follow-dialog";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>({});
   const [posts, setPosts] = useState<any[]>([]);
   const [post, setPost] = useState<any>({});
-  const [dialogState, setDialogState] = useState<boolean>(false);
+  const [postDialogState, setPostDialogState] = useState<boolean>(false);
+  const [followDialogState, setFollowDialogState] = useState<boolean>(false);
+  const [followType, setFollowType] = useState<string>("");
 
   const handleFileSelect = (e: any) => {
     const file = e.target.files?.[0];
@@ -41,11 +44,20 @@ export default function Profile() {
 
   const handleOpenPost = (data: any) => {
     setPost(data);
-    setDialogState(true);
+    setPostDialogState(true);
   };
 
-  const handleCloseDialog = () => {
-    setDialogState(false);
+  const handleClosePost = () => {
+    setPostDialogState(false);
+  };
+
+  const handleOpenFollow = (type: string) => {
+    setFollowType(type);
+    setFollowDialogState(true);
+  };
+
+  const handleCloseFollow = () => {
+    setFollowDialogState(false);
   };
 
   useEffect(() => {
@@ -88,14 +100,20 @@ export default function Profile() {
                 <p className="text-muted-foreground">posts</p>
               </div>
 
-              <div className="flex gap-1">
+              <div
+                className="flex gap-1 cursor-pointer hover:text-muted-foreground"
+                onClick={() => handleOpenFollow("Followers")}
+              >
                 <p className="font-semibold">{profile.followers_count}</p>
-                <p className="text-muted-foreground">followers</p>
+                <p>followers</p>
               </div>
 
-              <div className="flex gap-1">
+              <div
+                className="flex gap-1 cursor-pointer hover:text-muted-foreground"
+                onClick={() => handleOpenFollow("Following")}
+              >
                 <p className="font-semibold">{profile.following_count}</p>
-                <p className="text-muted-foreground">following</p>
+                <p>following</p>
               </div>
             </div>
 
@@ -122,8 +140,15 @@ export default function Profile() {
           post={post}
           profile_img={profile.profile_img}
           username={profile.username}
-          isOpen={dialogState}
-          onClose={handleCloseDialog}
+          isOpen={postDialogState}
+          onClose={handleClosePost}
+        />
+
+        <FollowDialog
+          user_id={profile._id}
+          type={followType}
+          isOpen={followDialogState}
+          onClose={handleCloseFollow}
         />
       </div>
     </>

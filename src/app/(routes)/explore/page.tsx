@@ -2,7 +2,7 @@
 
 import { fetchExplorePosts } from "@/components/api/postsApi";
 import { useEffect, useState } from "react";
-import PostCards from "../_components/post-cards";
+import PostCards from "../_components/cards/post-cards";
 
 export default function Explore() {
   const [explrePosts, setExplorePosts] = useState<any[]>([]);

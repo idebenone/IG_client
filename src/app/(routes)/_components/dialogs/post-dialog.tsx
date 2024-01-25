@@ -1,7 +1,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
-import Comments from "./comments";
+import Comments from "../comments";
 import { HeartFilledIcon } from "@radix-ui/react-icons";
 import { Bookmark, HeartIcon, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";

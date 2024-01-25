@@ -163,3 +163,51 @@ export const unlikePost = async (data: any) => {
     console.log(error);
   }
 };
+
+export const getFollowers = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/user/followers/${id}`,
+      {
+        headers: {
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFollowing = async (id: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3001/user/following/${id}`,
+      {
+        headers: {
+          "x-access-token": fetchToken().toString(),
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getFollowersSearch = async (query: string, id: string) => {
+  // try {
+  //   const response = await axios.get(
+  //     `http://localhost:3001/user/follower/search/${id}?query=${query}`,
+  //     {
+  //       headers: {
+  //         "x-access-token": fetchToken().toString(),
+  //       },
+  //     }
+  //   );
+  //   return response;
+  // } catch (error) {
+  //   console.log(error);
+  // }
+};
