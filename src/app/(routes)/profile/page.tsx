@@ -9,6 +9,7 @@ import { getProfile, uploadProfileImage } from "@/components/api/userApi";
 import PostCards from "../_components/cards/post-cards";
 import PostDialog from "../_components/dialogs/post-dialog";
 import FollowDialog from "../_components/dialogs/follow-dialog";
+import EditProfile from "../_components/dialogs/edit-profile";
 
 export default function Profile() {
   const [profile, setProfile] = useState<any>({});
@@ -16,6 +17,7 @@ export default function Profile() {
   const [post, setPost] = useState<any>({});
   const [postDialogState, setPostDialogState] = useState<boolean>(false);
   const [followDialogState, setFollowDialogState] = useState<boolean>(false);
+  const [editProfileState, setEditProfileState] = useState<boolean>(false);
   const [followType, setFollowType] = useState<string>("");
 
   const handleFileSelect = (e: any) => {
@@ -60,6 +62,14 @@ export default function Profile() {
     setFollowDialogState(false);
   };
 
+  const handleOpenProfile = () => {
+    setEditProfileState(true);
+  };
+
+  const handleCloseProfile = () => {
+    setEditProfileState(false);
+  };
+
   useEffect(() => {
     handleProfileFetch();
   }, []);
@@ -90,7 +100,9 @@ export default function Profile() {
             <div className="flex gap-4 items-center">
               <p className="font-medium">{profile.username}</p>
 
-              <Button variant={"secondary"}>Edit Profile</Button>
+              <Button variant={"secondary"} onClick={handleOpenProfile}>
+                Edit Profile
+              </Button>
               <Button variant={"secondary"}>View Archive</Button>
             </div>
 
@@ -135,6 +147,8 @@ export default function Profile() {
             </div>
           ))}
         </div>
+
+        <EditProfile isOpen={editProfileState} onClose={handleCloseProfile} />
 
         <PostDialog
           post={post}

@@ -7,6 +7,7 @@ import {
   Bell,
   Compass,
   Home,
+  InstagramIcon,
   LogOut,
   MoreHorizontal,
   PlusSquare,
@@ -35,7 +36,7 @@ import { Input } from "@/components/ui/input";
 const MediumBar = () => {
   return (
     <div className=" border-r-[1px] border-gray-600 h-full p-4 flex flex-col justify-between items-center">
-      <div>Logo</div>
+      <InstagramIcon />
 
       <div className="flex flex-col gap-8">
         <div className="flex gap-4 items-center cursor-pointer">

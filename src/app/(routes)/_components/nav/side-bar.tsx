@@ -9,6 +9,7 @@ import {
   Bell,
   Compass,
   Home,
+  InstagramIcon,
   LogOut,
   MoreHorizontal,
   PlusSquare,
@@ -75,7 +76,6 @@ const SideBar = () => {
   const handleSearch = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.trim()) {
       const response = await searchUser(event.target.value.trim());
-      console.log(response?.data);
       setUsers(response?.data);
     }
   };
@@ -126,7 +126,10 @@ const SideBar = () => {
 
   return (
     <div className="w-[250px] border-r-[1px] border-gray-600 h-full p-4 flex flex-col gap-20">
-      <div>Logo</div>
+      <div className="flex gap-4">
+        <InstagramIcon />
+        <p className="font-bold">Instagram</p>
+      </div>
 
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col gap-8">

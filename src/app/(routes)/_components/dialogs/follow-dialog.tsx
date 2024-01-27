@@ -2,6 +2,7 @@ import {
   getFollowers,
   getFollowersSearch,
   getFollowing,
+  getFollowingSearch,
 } from "@/components/api/userApi";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
@@ -21,13 +22,13 @@ export default function FollowDialog(props: FollowProps) {
   const [list, setList] = useState<any[]>([]);
 
   const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // let response;
-    // if (props.type == "Followers") {
-    //   response = await getFollowersSearch(e.target.value, props.user_id);
-    // } else {
-    //   //getFollowingSeardh call
-    // }
-    // response?.status != 200 ? setList([]) : setList(response?.data);
+    let response;
+    if (props.type == "Followers") {
+      response = await getFollowersSearch(e.target.value, props.user_id);
+    } else {
+      response = await getFollowingSearch(e.target.value.trim(), props.user_id);
+    }
+    response?.status != 200 ? setList([]) : setList(response?.data);
   };
 
   const handleList = async () => {
